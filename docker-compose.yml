@@ -1,0 +1,54 @@
+# docker-compose.yml
+version: "3"
+services:
+  proxy:
+    image: "jwilder/nginx-proxy:latest"
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+  db:
+    image: "postgres:11.4"
+    ports:
+      - "5432"
+    volumes:
+      - "./data:/var/lib/postgresql/data"
+    environment:
+      - "POSTGRES_USER"
+      - "POSTGRES_PASSWORD"
+      - "POSTGRES_DB"
+  app:
+    build: .
+    command:
+      [
+        "./wait-for-it/wait-for-it.sh",
+        "db:5432",
+        "--",
+        "python3",
+        "manage.py",
+        "runserver",
+        "0.0.0.0:8000",
+      ]
+    volumes:
+      - "./project:/usr/src/app/myproject"
+      - "./apps/wallet:/usr/src/app/wallet"
+      # - "./apps/myapp2:/usr/src/app/myapp2"
+
+    ports:
+      - "8000"
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      - "DJANGO_USE_DEBUG"
+      - "DJANGO_USE_DEBUG_TOOLBAR"
+      - "SITE_HOST"
+      - "MEDIA_HOST"
+      - "STATIC_HOST"
+      - "POSTGRES_HOST=db"
+      - "POSTGRES_USER"
+      - "POSTGRES_PASSWORD"
+      - "POSTGRES_DB"
+      - "VIRTUAL_PORT=8000"
+      - "VIRTUAL_HOST=${SITE_HOST}"
