@@ -14,19 +14,5 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from rest_framework.schemas import get_schema_view
 
-urlpatterns = [
-    # TODO: remove
-    path(
-        "",
-        get_schema_view(
-            title="wallet",
-            description="Wallet API Sepcification",
-            authentication_classes=[],
-            permission_classes=[],
-        ),
-        name="openapi-schema",
-    ),
-    path("v1/", include("api.urls", namespace="v1")),
-]
+urlpatterns = [path("v1/", include("api.urls", namespace="v1"))]

@@ -11,7 +11,7 @@ to your `/etc/hosts` file to access the service
 
 ## API documentation
 
-There are three ways to check API documentation
+There are two ways to check API documentation
 
 * Find the OpenAPI spec in [schema.yml](./docs/schema.yml)
 * Check [examples.http](./docs/examples.http) for request examples
