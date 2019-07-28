@@ -31,9 +31,7 @@ services:
       ]
     volumes:
       - "./project:/usr/src/app/myproject"
-      - "./apps/wallet:/usr/src/app/wallet"
-      # - "./apps/myapp2:/usr/src/app/myapp2"
-
+      - "./apps/api:/usr/src/app/api"
     ports:
       - "8000"
     links:
