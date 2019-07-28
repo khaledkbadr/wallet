@@ -17,8 +17,9 @@ from django.urls import path, include
 from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
+    # TODO: remove
     path(
-        "openapi",
+        "",
         get_schema_view(
             title="wallet",
             description="Wallet API Sepcification",
@@ -27,5 +28,5 @@ urlpatterns = [
         ),
         name="openapi-schema",
     ),
-    path("v1/api/", include("api.urls")),
+    path("v1/", include("api.urls", namespace="v1")),
 ]

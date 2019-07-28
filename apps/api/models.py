@@ -5,6 +5,11 @@ from django.core.validators import MinValueValidator
 
 
 class AccountBalance(models.Model):
+    """Account Balances
+
+    mainly used to lock accounts and cache balances
+    """
+
     account = models.CharField(max_length=50, primary_key=True)
     balance = models.DecimalField(
         max_digits=20, decimal_places=2, validators=[MinValueValidator(Decimal("0.0"))]
@@ -16,6 +21,11 @@ class AccountBalance(models.Model):
 
 
 class Transfer(models.Model):
+    """
+    For every money transfer between two account.
+    Two Transfer objects are created every time with different direction and primary and secondary accounts
+    """
+
     DIRECTIONS = [("incoming", "incoming"), ("outgoing", "outgoing")]
 
     primary_account = models.ForeignKey(

@@ -1,0 +1,26 @@
+@baseUrl = http://myproject.local/v1
+
+###
+GET {{baseUrl}}/balances/ HTTP/1.1
+
+###
+POST {{baseUrl}}/balances/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "user": "khaled",
+    "balance": 1000
+}
+
+###
+GET {{baseUrl}}/transfers/ HTTP/1.1
+
+###
+POST {{baseUrl}}/transfers/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "from_account": "dina",
+    "to_account": "khaled",
+    "amount": 100
+}

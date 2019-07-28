@@ -30,8 +30,8 @@ if os.environ.get("DJANGO_USE_DEBUG"):
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS.append("*")
 # DEBUG = False
-if os.environ.get("SITE_HOST"):
-    ALLOWED_HOSTS.append(os.environ.get("SITE_HOST"))
+# if os.environ.get("SITE_HOST"):
+#     ALLOWED_HOSTS.append(os.environ.get("SITE_HOST"))
 
 # Application definition
 

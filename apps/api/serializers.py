@@ -27,6 +27,11 @@ class TransferCreateSerializer(serializers.Serializer):
         fields = ("from_account", "amount", "to_account")
 
     def create(self, validated_data):
+        """Lock related accounts, add transfers, and update accounts' balances
+
+        Raises:
+            ValidationError: when amount is invalid
+        """
         prim_account = validated_data.pop("from_account")
         sec_account = validated_data.pop("to_account")
         amount = validated_data.pop("amount")
@@ -36,18 +41,18 @@ class TransferCreateSerializer(serializers.Serializer):
 
         with transaction.atomic():
             # Lock accounts' balance row, preventing anyone else from changing the balance
-
             prim_acc_ins = AccountBalance.objects.select_for_update().filter(
                 account=prim_account
             )
             AccountBalance.objects.select_for_update().filter(account=sec_account)
 
-            # Update the account's total and add a Transfer row atomically
+            # Update the primary account's balance and add a Transfer row atomically
             prim_acc_ins = AccountBalance.objects.get(account=prim_account)
             prim_acc_ins.balance = prim_acc_ins.balance - decimal.Decimal(amount)
             prim_acc_ins.full_clean()
             prim_acc_ins.save()
 
+            # Update the secondary account's balance and add a Transfer row atomically
             sec_acc_ins = AccountBalance.objects.get(account=sec_account)
             sec_acc_ins.balance = sec_acc_ins.balance + decimal.Decimal(amount)
             sec_acc_ins.save()

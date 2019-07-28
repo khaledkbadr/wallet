@@ -7,6 +7,8 @@ from .models import AccountBalance, Transfer
 
 
 class BalanceListCreate(generics.ListCreateAPIView):
+    """List and create AccountBalance"""
+
     queryset = AccountBalance.objects.all()
     serializer_class = serializers.BalanceSerializer
 
@@ -16,6 +18,9 @@ class TransferListCreate(generics.ListCreateAPIView):
     serializer_class = serializers.TransferListSerializer
 
     def create(self, request, *args, **kwargs):
+        """Create double entry bookkeeping
+
+        """
         write_serializer = serializers.TransferCreateSerializer(data=request.data)
         write_serializer.is_valid(raise_exception=True)
         self.perform_create(write_serializer)

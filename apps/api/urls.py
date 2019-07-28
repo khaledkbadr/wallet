@@ -10,6 +10,8 @@ from django.urls import path
 
 from .views import BalanceListCreate, TransferListCreate
 
+app_name = "wallet"
+
 urlpatterns = [
     path("balances/", BalanceListCreate.as_view()),
     path("transfers/", TransferListCreate.as_view()),
