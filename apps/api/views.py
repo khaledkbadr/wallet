@@ -23,6 +23,10 @@ class TransferListCreate(generics.ListCreateAPIView):
         """
         write_serializer = serializers.TransferCreateSerializer(data=request.data)
         write_serializer.is_valid(raise_exception=True)
-        self.perform_create(write_serializer)
+        if (
+            write_serializer.validated_data["from_account"]
+            != write_serializer.validated_data["to_account"]
+        ):
+            self.perform_create(write_serializer)
         content = {"message": "Transfer has finished successfully"}
         return Response(content, status=status.HTTP_201_CREATED)
